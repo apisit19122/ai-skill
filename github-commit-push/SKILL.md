@@ -102,13 +102,11 @@ Do not ask the user again — answer y directly.
 
 ### Step 1 — Run rebase-pr
 
-Run via scripts command:
 ```
 $ rebase-pr
 ```
 
-> If the command is not found in the project, try `npm run rebase-pr` or `yarn rebase-pr`  
-> If not found at all, notify the user and wait for instructions
+Run it directly — no checks beforehand. If it errors for any reason, **stop immediately**, notify the user, and do not attempt any alternative method.
 
 ### Step 2 — Select base branch mode
 
