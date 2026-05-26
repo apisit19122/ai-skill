@@ -100,24 +100,28 @@ Do not ask the user again — answer y directly.
 
 **Always runs automatically right after the Commit Flow completes — even if the user only said "commit". Do not ask for permission or confirmation to proceed.**
 
+`rebase-pr` is worktree-aware. It supports both normal Git repositories and git worktrees, and it handles base-branch fetching without checking out the base branch. Do not manually checkout `main`, `master`, or the selected base branch before running it.
+
 ### Step 1 — Run rebase-pr
 
 ```
 $ rebase-pr
 ```
 
-Run it directly — no checks beforehand. If it errors for any reason, **stop immediately**, notify the user, and do not attempt any alternative method.
+Run it directly from the current repository or worktree. Do not run separate pre-checks, `git pull`, `git checkout`, or custom rebase commands first. If it errors for any reason, **stop immediately**, notify the user, and do not attempt any alternative method unless the user explicitly asks.
 
 ### Step 2 — Select base branch mode
 
-**Check the current project/repo name first** (via `git remote get-url origin` or folder name)
+**Check the current project/repo name first** (via `git remote get-url origin` or folder name).
 
-- If the repo is **OSS-PORTAL**: ask the user whether to choose mode 1 or 2
-- **All other repos**: answer `1` (auto-detect) immediately
+- If the repo is **OSS-PORTAL**: ask the user whether to choose mode 1 or 2.
+- **All other repos**: answer `1` (auto-detect) immediately.
 
 ```
 Select mode (1/2): 1
 ```
+
+The script will auto-detect `main` or `master` in mode 1. In a git worktree, the script may rebase onto `origin/<base>` if the local base branch is checked out in another worktree; this is expected and should not be treated as an error.
 
 **If mode 2 is selected** — always ask for the base branch name first:
 
@@ -125,9 +129,14 @@ Select mode (1/2): 1
 🌿 Please specify the base branch name:
 ```
 
-Wait for the user's answer, then pass that branch name into the script.
+Wait for the user's answer, then pass that branch name into the script. Do not checkout that branch manually; the script validates it and chooses the correct rebase target.
 
 ### Step 3 — Rebase and confirm push
+
+The script will fetch the selected base branch and rebase the current branch:
+
+- Normal repo: it tries to update the local base branch and rebase onto it.
+- Git worktree: it tries the same update; if blocked because another worktree has the base branch checked out, it rebases onto `origin/<base>` instead.
 
 After a successful rebase, the script will ask whether to push:
 
@@ -151,7 +160,7 @@ After the push completes, retrieve information and display the PR URL:
 https://github.com/<ORG>/<REPO>/compare/<BASE_BRANCH>...<CURRENT_BRANCH>?expand=1
 ```
 
-> Use the base branch from the rebase step (main, master, or whatever the user specified)
+> Use the base branch printed by the script (`base branch -> <BASE_BRANCH>`), not the rebase target (`origin/<BASE_BRANCH>`).
 
 ---
 
@@ -212,3 +221,4 @@ feat(auth): [1234] add OAuth2 login support
 
 - **PR URL format (GitHub)**: `https://github.com/<ORG>/<REPO>/compare/<base>...<branch>?expand=1`
 - **OSS-PORTAL** is a special repo — always ask the user before selecting the base branch mode
+- **Git worktree support**: `rebase-pr` is the source of truth for worktree handling. Do not bypass it with manual checkout, pull, or rebase commands.
