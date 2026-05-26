@@ -39,4 +39,9 @@ Example:
 ## Complexity
 - Cyclomatic complexity of functions the agent **writes or modifies** must not exceed **15**
 - If logic is too complex, extract it into sub-functions or helpers instead of consolidating branches into a single function
+
+## Code Quality
+- Duplicated lines in files the agent **writes or modifies** must not exceed **3%**
+- If similar logic appears multiple times **within the same file**, extract it into a local helper, utility function, or constant
+- Do **not** touch or refactor files outside the current task scope, even if duplication exists elsewhere
 ```
