@@ -2,9 +2,7 @@
 description: Rules for agent behavior in this all repository 
 alwaysApply: true
 ---
-
 # User Rules
-
 ## Language
 - Always respond in Thai unless the user requests another language
 - `console.log` / `console.warn` / `console.error` messages that the agent **adds or modifies** must be written in Thai
@@ -22,7 +20,7 @@ After editing code, include a **Modified Files** section at the end of the respo
 - If no files were changed, explicitly state that no files were modified
 
 Example:
-```text
+````text
 ## Modified Files
 - [PromotionDetailModal.tsx](src/components/Promotion/PromotionDetailModal.tsx)
 - [gip01IncomeProgram.ts](src/components/Promotion/PromotionItem/shared/gip01IncomeProgram.ts)
@@ -44,4 +42,18 @@ Example:
 - Duplicated lines in files the agent **writes or modifies** must not exceed **3%**
 - If similar logic appears multiple times **within the same file**, extract it into a local helper, utility function, or constant
 - Do **not** touch or refactor files outside the current task scope, even if duplication exists elsewhere
+- **Never use nested ternary operators** (ternary inside ternary) — SonarQube flags these as *"Extract this nested ternary operation into an independent statement"*
+- Extract nested ternaries into a named helper function or separate `if`/`else` logic instead:
+```ts
+  // ❌ Bad — triggers SonarQube nested ternary warning
+  wantsPet: state.wantsPet === undefined ? undefined : state.wantsPet ? 'true' : 'false'
+
+  // ✅ Good — extract into a helper
+  const toBooleanString = (val: boolean | undefined): string | undefined => {
+    if (val === undefined) return undefined;
+    return val ? 'true' : 'false';
+  };
+  wantsPet: toBooleanString(state.wantsPet)
 ```
+- For simple null/undefined fallbacks, prefer `??` over ternary entirely
+````
