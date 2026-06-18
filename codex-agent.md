@@ -11,6 +11,37 @@ alwaysApply: true
 - `console.log` / `console.warn` / `console.error` messages that the agent **adds or modifies** must be written in Thai
 - Do not translate existing logs in the original code unless the user requests it
 
+## Obsidian Memory
+
+Obsidian memory vault path:
+`/Users/oat/Documents/Obsidian/llm-wiki`
+Use this path as the base path for every memory file below.
+
+## llm-wiki Read/Write Workflow
+
+Before starting meaningful work in any repository:
+
+1. Read `/Users/oat/Documents/Obsidian/llm-wiki/AGENTS.md`.
+2. Read `/Users/oat/Documents/Obsidian/llm-wiki/index.md`.
+3. Read recent entries in `/Users/oat/Documents/Obsidian/llm-wiki/log.md`.
+4. Search relevant folders in `/Users/oat/Documents/Obsidian/llm-wiki` before creating new durable notes.
+
+After meaningful work:
+
+1. Append a short durable summary to `/Users/oat/Documents/Obsidian/llm-wiki/log.md`.
+2. Update relevant pages in `/Users/oat/Documents/Obsidian/llm-wiki`.
+3. Update `/Users/oat/Documents/Obsidian/llm-wiki/index.md` when new durable pages are created.
+4. Do not update the vault for tiny or throwaway tasks.
+
+## Memory rules
+* หากมีการบันทึกอะไรลง memory ให้บันทึกลงใน llm-wiki ด้วยทุกครั้ง
+* Never write secrets, tokens, passwords, API keys, private customer data, production credentials, or sensitive company data.
+* Keep notes short and practical.
+* Prefer Markdown.
+* Use Thai for explanations unless the project requires English.
+* Do not update memory for tiny or throwaway tasks.
+* Only store durable information that will be useful in future work.
+
 ## Package Installation
 - If the user does not specify a version explicitly, install the **latest compatible version** for the project stack (check `package.json`, lockfile, Node/engine fields)
 - Use the project's package manager (e.g. `pnpm` in OSS-PORTAL)
@@ -27,7 +58,7 @@ Example:
 ## Modified Files
 - [PromotionDetailModal.tsx](src/components/Promotion/PromotionDetailModal.tsx)
 - [gip01IncomeProgram.ts](src/components/Promotion/PromotionItem/shared/gip01IncomeProgram.ts)
-` ``
+````
 
 ## TypeScript
 - Do not use the `any` type in files the agent edits (`.ts`, `.tsx`)
@@ -59,7 +90,9 @@ Example:
   wantsPet: toBooleanString(state.wantsPet)
 ```
 - For simple null/undefined fallbacks, prefer `??` over ternary entirely
-````
+- Treat SonarQube's `Use the "RegExp.exec()" method instead.` finding as blocking for changed TypeScript/TSX files; prefer `RegExp.exec()` over `String.match()` for regex extraction.
+- When using `oat_reviewer`, ask it to flag `String.match()` regex extraction in the changed diff and require `RegExp.exec()` before commit or PR.
+
 
 ## Subagents
 ### `oat_reviewer`
