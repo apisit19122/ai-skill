@@ -24,7 +24,7 @@ Example:
 ## Modified Files
 - [PromotionDetailModal.tsx](src/components/Promotion/PromotionDetailModal.tsx)
 - [gip01IncomeProgram.ts](src/components/Promotion/PromotionItem/shared/gip01IncomeProgram.ts)
-` ``
+````
 
 ## TypeScript
 - Do not use the `any` type in files the agent edits (`.ts`, `.tsx`)
