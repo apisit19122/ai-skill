@@ -56,4 +56,4 @@ Example:
   wantsPet: toBooleanString(state.wantsPet)
 ```
 - For simple null/undefined fallbacks, prefer `??` over ternary entirely
-````
+- Treat SonarQube's `Use the "RegExp.exec()" method instead.` finding as blocking for changed TypeScript/TSX files; prefer `RegExp.exec()` over `String.match()` for regex extraction.
